@@ -226,3 +226,14 @@ class ShardClient(DefaultClient):
             for client in self._serverdict.values():
                 for c in client.connection_pool._available_connections:
                     c.disconnect()
+
+    def lock(self, key, version=None, timeout=None, sleep=0.1,
+             blocking_timeout=None, client=None):
+
+        if client is None:
+            key = self.make_key(key, version=version)
+            client = self.get_server(key)
+
+        key = self.make_key(key, version=version)
+        return super(ShardClient, self).lock(key, timeout=timeout, sleep=sleep, client=client,
+                                             blocking_timeout=blocking_timeout)

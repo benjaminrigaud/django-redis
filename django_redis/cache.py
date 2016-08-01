@@ -127,3 +127,7 @@ class RedisCache(BaseCache):
     @omit_exception
     def close(self, **kwargs):
         self.client.close(**kwargs)
+
+    @omit_exception
+    def lock(self, *args, **kwargs):
+        return self.client.lock(*args, **kwargs)

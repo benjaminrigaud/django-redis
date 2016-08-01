@@ -470,3 +470,12 @@ class DefaultClient(object):
             for c in self.client.connection_pool._available_connections:
                 c.disconnect()
             del self._client
+
+    def lock(self, key, version=None, timeout=None, sleep=0.1,
+             blocking_timeout=None, client=None):
+        if client is None:
+            client = self.get_client(write=True)
+
+        key = self.make_key(key, version=version)
+        return client.lock(key, timeout=timeout, sleep=sleep,
+                           blocking_timeout=blocking_timeout)
